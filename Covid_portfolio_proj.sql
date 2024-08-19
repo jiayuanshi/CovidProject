@@ -29,6 +29,13 @@ where continent is not NULL
 group by location, population
 order by percent_popultion_infected desc
 
+-- countries with highest infection rate compared to population
+select location, population, date, MAX(total_cases) as highest_infection_count, MAX((total_cases/population)*100) as percent_popultion_infected
+from PortfolioProject..CovidDeaths
+where continent is not NULL
+group by location, population, date
+order by percent_popultion_infected desc
+
 -- countries with highest death count
 select location, MAX(total_deaths) as highest_death_count
 from PortfolioProject..CovidDeaths
@@ -46,6 +53,13 @@ where continent is not NULL
 group by continent
 order by highest_death_count desc
 
+-- data not included in 'continent' column
+select location, sum(new_deaths) as total_death_count
+from PortfolioProject..CovidDeaths
+where continent is NULL
+and location not in ('World', 'European Union', 'International')
+group by location
+order by total_death_count desc
 
 -- **GLOBAL WISE**
 
